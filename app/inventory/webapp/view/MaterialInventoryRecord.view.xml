@@ -13,9 +13,10 @@
         titleAlignment="Center"
     >
         <l:VerticalLayout
-            id="_IDGenVerticalLayout1"
+            id="mainContent"
             width="100%"
-        >
+            visible="false"
+         >
             <l:BlockLayout
                 id="_IDGenBlockLayout1"
                 background="Dashboard"
@@ -196,5 +197,21 @@
                 </l:BlockLayoutRow>
             </l:BlockLayout>
         </l:VerticalLayout>
+            <VBox id="unauthorizedMessage"
+                class="sapUiMediumMarginTopBottom sapUiMediumMarginBeginEnd"
+                justifyContent="Center"
+                alignItems="Center"
+                visible="false"
+				>
+                
+                <Text
+                    text="404 You are not authorized to access this page."
+                    textAlign="Center"
+                    wrapping="true"
+                    class="sapUiLargeMarginTop unauthorisedText"
+                    
+					/>
+					<ImageContent  src="sap-icon://message-warning" class="unauthorisedicon"></ImageContent> 
+                </VBox>
     </Page>
 </mvc:View>

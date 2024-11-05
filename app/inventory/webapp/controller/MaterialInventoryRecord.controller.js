@@ -8,9 +8,12 @@ sap.ui.define([
 ],
     function (Controller, MessageBox,JSONModel,Fragment, ODataModel, MessageToast) {
         "use strict";
+        this.userEmail = null;
 
         return Controller.extend("inventory.controller.MaterialInventoryRecord", {
-            onInit: function () {
+            onInit: async function () {
+                await this.getLoggedInUserInfo();
+                await this.useUserEmail();
                 let payload = { 
                     data  : [
                     {
@@ -31,6 +34,49 @@ sap.ui.define([
                 console.log(x);
 
             },
+
+            getLoggedInUserInfo: async function() {
+                try {
+                    let User = await sap.ushell.Container.getService("UserInfo");
+                    let userID = User.getId();
+                    this.userEmail = User.getEmail(); 
+                    let userFullName = User.getFullName();
+                    console.log("userEmail", this.userEmail);
+                    console.log("userFullName", userFullName);
+                    console.log("userID", userID);
+                } catch (error) {
+                    this.userEmail = undefined; 
+                    console.log("hiii", this.userEmail);
+                }
+            },
+            
+           
+            useUserEmail: function() {
+                if (this.userEmail) {
+                    console.log("Using userEmail in another function:", this.userEmail);
+                    
+                   
+                    if (this.userEmail === "shruti.kumari@ingenxtec.com" || this.userEmail === "shreya.shalini@ingenxtec.com") {
+                    
+                        this.getView().byId("mainContent").setVisible(true);
+                        this.getView().byId("unauthorizedMessage").setVisible(false);
+                    } else {
+                       
+                        this.getView().byId("mainContent").setVisible(false);
+                        this.getView().byId("unauthorizedMessage").setVisible(true);
+                    }
+                } else {
+                    console.log("userEmail is not set yet.");
+                    this.getView().byId("mainContent").setVisible(false);
+                    this.getView().byId("unauthorizedMessage").setVisible(true);
+                }
+            },
+            
+
+            
+             
+          
+
             onDeleteRow: function (oEvent) {
                 // Get the table's model
                 var oTable = this.byId("entryTypeTable");
